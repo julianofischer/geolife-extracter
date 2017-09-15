@@ -5,10 +5,15 @@ package geo;
  * This class represents a geographical coordinate
  */
 public class Coordinate {
+
+    public static final int INVALID_ALTITUDE = -777;
+
     private double latitude;
     private double longitude;
+    private double altitude;
 
-    public Coordinate(double latitude, double longitude) {
+    //altitude in meters
+    public Coordinate(double latitude, double longitude, double altitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -27,5 +32,13 @@ public class Coordinate {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public double getAltitude() {
+        return altitude;
+    }
+
+    public void setAltitude(double altitude) {
+        this.altitude = altitude;
     }
 }
