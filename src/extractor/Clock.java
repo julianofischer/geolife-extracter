@@ -1,4 +1,4 @@
-package simulator;
+package extractor;
 
 /**
  * Created by juliano on 09/05/17.

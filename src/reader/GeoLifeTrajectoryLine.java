@@ -22,4 +22,36 @@ public class GeoLifeTrajectoryLine {
     public long getTime(){
         return date.getTime();
     }
+
+    public double getLatitute() {
+        return latitute;
+    }
+
+    public void setLatitute(double latitute) {
+        this.latitute = latitute;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getAltitude() {
+        return altitude;
+    }
+
+    public void setAltitude(double altitude) {
+        this.altitude = altitude;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

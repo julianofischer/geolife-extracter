@@ -1,4 +1,6 @@
-package geo;
+package extractor;
+
+import geo.Coordinate;
 
 /**
  * Created by juliano on 10/05/17.
@@ -6,7 +8,7 @@ package geo;
  */
 public class Node {
     private Coordinate location;
-    private String id;
+    private int id;
 
     public Coordinate getLocation() {
         return location;
@@ -20,11 +22,11 @@ public class Node {
         this.location = new Coordinate(latitude, longitude, altitude);
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 }

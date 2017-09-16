@@ -16,7 +16,6 @@ public class GeoLifeReader {
         dirs = filter(Arrays.asList(root.listFiles()));
     }
 
-
     private ArrayList<File> filter(List<File> f){
         ArrayList<File> ret = new ArrayList();
         for (File file : f){
@@ -33,9 +32,14 @@ public class GeoLifeReader {
             DirReader dr = new DirReader(dir);
             List<GeoLifeTrajectoryLine> aux = dr.read();
 
+            // the directory name is the nodeId
+            int nodeId = Integer.parseInt(dir.getName());
+
             for (GeoLifeTrajectoryLine line : aux) {
-                TrajectoryEntry entry = new TrajectoryEntry();
+                TrajectoryEntry entry = new TrajectoryEntry(line, nodeId);
+                ret.add(entry);
             }
         }
+        return ret;
     }
 }
