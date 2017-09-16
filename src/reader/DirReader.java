@@ -14,8 +14,8 @@ public class DirReader {
     private GeoLifeFileReader fileReader = null;
     private Queue<File> filesToRead;
 
-    public DirReader(String rootStr) {
-        this.root = new File(rootStr);
+    public DirReader(File root) {
+        this.root = root;
         this.trajectoryRoot = new File(root.getAbsolutePath() + "/Trajectory");
         trajectoryFiles = new ArrayList<File>(Arrays.asList(trajectoryRoot.listFiles()));
         reading = null;
@@ -23,7 +23,7 @@ public class DirReader {
     }
 
     //should be called after verification by "hasNextLine"
-    public GeoLifeTrajectoryLine getNextLine() {
+    private GeoLifeTrajectoryLine readNextLine() {
         if (!fileReader.hasNextLine()) {
             fileReader = new GeoLifeFileReader(filesToRead.remove());
         }
@@ -31,13 +31,13 @@ public class DirReader {
         return fileReader.nextLine();
     }
 
-    public boolean hasNextFile() {
+    private boolean hasNextFile() {
         //not is empty
         return !filesToRead.isEmpty();
 
     }
 
-    public boolean hasNextLine() {
+    private boolean hasNextLine() {
         if (fileReader != null) {
             if (fileReader.hasNextLine()) {
                 return true;
@@ -46,5 +46,14 @@ public class DirReader {
         return hasNextFile();
     }
 
+    public ArrayList<GeoLifeTrajectoryLine> read(){
 
+        ArrayList<GeoLifeTrajectoryLine> ret = new ArrayList();
+
+        while(hasNextLine()){
+            ret.add(readNextLine());
+        }
+
+        return ret;
+    }
 }

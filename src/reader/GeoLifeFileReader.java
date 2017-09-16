@@ -18,14 +18,14 @@ public class GeoLifeFileReader {
 
     private final File file;
     private Scanner scanner;
-    public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");;
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     public GeoLifeFileReader(File f){
         this.file = f;
         skipLines(HEADER_LINES);
 
         try {
-            scanner = new Scanner  (file);
+            scanner = new Scanner(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class GeoLifeFileReader {
         Date d = null;
 
         try {
-            d = sdf.parse(dateTimeStr);
+            d = DATE_FORMAT.parse(dateTimeStr);
         } catch (ParseException e) {
             e.printStackTrace();
         }

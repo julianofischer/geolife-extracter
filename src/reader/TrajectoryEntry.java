@@ -7,6 +7,7 @@ import geo.Coordinate;
  */
 public class TrajectoryEntry {
     private String nodeId;
-    private Coordinate
+    private Coordinate coordinate;
+
 
 }

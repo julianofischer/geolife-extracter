@@ -22,7 +22,4 @@ public class GeoLifeTrajectoryLine {
     public long getTime(){
         return date.getTime();
     }
-
-
-
 }

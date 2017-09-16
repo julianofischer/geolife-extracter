@@ -16,8 +16,8 @@ public class Node {
         this.location = location;
     }
 
-    public void updateLocation(double latitude, double longitude) {
-        this.location = new Coordinate(latitude, longitude);
+    public void updateLocation(double latitude, double longitude, double altitude) {
+        this.location = new Coordinate(latitude, longitude, altitude);
     }
 
     public String getId() {
