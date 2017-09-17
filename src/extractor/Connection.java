@@ -1,9 +1,18 @@
 package extractor;
 
+import java.util.Date;
+
 /**
  * Created by juliano on 16/09/17.
  */
 public class Connection {
+    private int from;
+    private int to;
+    private Date openingTime;
+    private Date closingTime;
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -28,9 +37,6 @@ public class Connection {
         result = 31 * result + min;
         return result;
     }
-
-    private int from;
-    private int to;
 
     public int getFrom() {
         return from;

@@ -10,6 +10,22 @@ public class Node {
     private Coordinate location;
     private int id;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Node node = (Node) o;
+
+        return id == node.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
     public Coordinate getLocation() {
         return location;
     }
