@@ -1,17 +1,23 @@
 package extractor;
 
-import java.util.Date;
-
 /**
  * Created by juliano on 16/09/17.
  */
 public class Connection {
+
+    public static final String CONNECTION_OPENING = "UP";
+    public static final String CONNECTION_CLOSING = "DOWN";
+
     private int from;
     private int to;
-    private Date openingTime;
-    private Date closingTime;
+    private double openingTime;
+    private double closingTime;
 
-
+    public Connection(int from, int to, double openingTime){
+        this.from = from;
+        this.to = to;
+        this.setOpeningTime(openingTime);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -52,5 +58,21 @@ public class Connection {
 
     public void setTo(int to) {
         this.to = to;
+    }
+
+    public double getOpeningTime() {
+        return openingTime;
+    }
+
+    public void setOpeningTime(double openingTime) {
+        this.openingTime = openingTime;
+    }
+
+    public double getClosingTime() {
+        return closingTime;
+    }
+
+    public void setClosingTime(double closingTime) {
+        this.closingTime = closingTime;
     }
 }
