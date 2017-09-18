@@ -27,6 +27,7 @@ public class GeoLifeExtractor {
     private String outputFileName = DEFAULT_OUT_FILE;
     private File outputFile;
     private List<String> outputLines;
+    private long firstConnectionTime = -1;
 
     public GeoLifeExtractor(File root){
         this.root = root;
@@ -41,6 +42,7 @@ public class GeoLifeExtractor {
         List<TrajectoryEntry> trajectories = reader.extractTrajectoryEntries();
         System.out.println("Extracting connections");
         extract(trajectories);
+        write();
     }
 
     private void extract(List<TrajectoryEntry> trajectories){
@@ -69,15 +71,6 @@ public class GeoLifeExtractor {
             checkConnections(n, time);
         }
 
-        //write the lines to the output file
-        outputFile = new File(outputFileName);
-
-        try{
-            Files.write(outputFile.toPath(), outputLines);
-        }catch(IOException ioe){
-            ioe.printStackTrace();
-        }
-
     }
 
     //check the connections between the node and all other nodes
@@ -101,16 +94,19 @@ public class GeoLifeExtractor {
     }
 
     private void openConnection(Node n1, Node n2, long time){
+        if (firstConnectionTime == -1){
+            firstConnectionTime = time;
+        }
         String id = generateConnectionId(n1,n2);
         openConnections.put(id, new Connection(n1.getId(),n2.getId(),time));
-        String line = String.format("%d CONN %d %d %s",time, n1.getId(), n2.getId(), Connection.CONNECTION_OPENING);
+        String line = String.format("%d CONN %d %d %s",time - firstConnectionTime, n1.getId(), n2.getId(), Connection.CONNECTION_OPENING);
         logLine(line);
     }
 
     private void closeConnection(Connection c){
         String id = generateConnectionId(c);
         openConnections.remove(id);
-        String line = String.format("%d CONN %d %d %s", c.getClosingTime(), c.getFrom(), c.getTo(),
+        String line = String.format("%d CONN %d %d %s", c.getClosingTime() - firstConnectionTime, c.getFrom(), c.getTo(),
                 Connection.CONNECTION_CLOSING);
         logLine(line);
     }
@@ -150,5 +146,16 @@ public class GeoLifeExtractor {
 
     public void configureOutputFilename(String filename){
         this.outputFileName = filename;
+    }
+
+    private void write(){
+        //write the lines to the output file
+        outputFile = new File(outputFileName);
+
+        try{
+            Files.write(outputFile.toPath(), outputLines);
+        }catch(IOException ioe){
+            ioe.printStackTrace();
+        }
     }
 }

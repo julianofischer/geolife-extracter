@@ -2,6 +2,8 @@ import extractor.GeoLifeExtractor;
 import geo.Coordinate;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.Instant;
 
 public class Main {
 
@@ -18,12 +20,16 @@ public class Main {
         //System.out.println(c1.distance(c2));
         //System.out.println(c2.distance(c1));
 
-        //File f = new File("/home/juliano/workspace/geolife-extracter/Geolife Trajectories 1.3/Data/");
-        File f = new File("/home/juliano/workspace/geolife-extracter/test/");
+        File f = new File("/home/juliano/workspace/geolife-extracter/Geolife Trajectories 1.3/Data/");
+        //File f = new File("/home/juliano/workspace/geolife-extracter/test/");
         GeoLifeExtractor gle = new GeoLifeExtractor(f);
         gle.configureRadioRange(RADIO_RANGE);
         gle.configureOutputFilename(OUTPUT_FILENAME);
+
+        Instant start = Instant.now();
         gle.run();
+        Instant end = Instant.now();
+        System.out.println(Duration.between(start,end));
 
     }
 }
