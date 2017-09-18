@@ -20,6 +20,7 @@ public class DirReader {
         trajectoryFiles = new ArrayList<File>(Arrays.asList(trajectoryRoot.listFiles()));
         reading = null;
         filesToRead = new LinkedList<File>(trajectoryFiles);
+        fileReader = new GeoLifeFileReader(filesToRead.remove());
     }
 
     //should be called after verification by "hasNextLine"

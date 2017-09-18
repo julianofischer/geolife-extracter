@@ -10,10 +10,10 @@ public class Connection {
 
     private int from;
     private int to;
-    private double openingTime;
-    private double closingTime;
+    private long openingTime;
+    private long closingTime;
 
-    public Connection(int from, int to, double openingTime){
+    public Connection(int from, int to, long openingTime){
         this.from = from;
         this.to = to;
         this.setOpeningTime(openingTime);
@@ -60,19 +60,19 @@ public class Connection {
         this.to = to;
     }
 
-    public double getOpeningTime() {
+    public long getOpeningTime() {
         return openingTime;
     }
 
-    public void setOpeningTime(double openingTime) {
+    public void setOpeningTime(long openingTime) {
         this.openingTime = openingTime;
     }
 
-    public double getClosingTime() {
+    public long getClosingTime() {
         return closingTime;
     }
 
-    public void setClosingTime(double closingTime) {
+    public void setClosingTime(long closingTime) {
         this.closingTime = closingTime;
     }
 }

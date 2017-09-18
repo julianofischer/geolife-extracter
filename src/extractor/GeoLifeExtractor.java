@@ -1,13 +1,11 @@
 package extractor;
 
 import geo.Coordinate;
-import reader.GeoLifeFileReader;
 import reader.GeoLifeReader;
 import reader.TrajectoryEntry;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -41,14 +39,18 @@ public class GeoLifeExtractor {
     public void run(){
         System.out.println("Extracting trajectories");
         List<TrajectoryEntry> trajectories = reader.extractTrajectoryEntries();
+        System.out.println("Extracting connections");
+        extract(trajectories);
     }
 
     private void extract(List<TrajectoryEntry> trajectories){
 
-        double init_time = trajectories.get(0).getDatetime().getTime();
+        long init_time = trajectories.get(0).getDatetime().getTime();
 
         for (TrajectoryEntry entry : trajectories){
-            double time  = entry.getDatetime().getTime() - init_time;
+
+            //convert time from ms to seconds
+            long time  = (entry.getDatetime().getTime() - init_time)/1000;
             int nodeId = entry.getNodeId();
 
             Node n;
@@ -60,6 +62,7 @@ public class GeoLifeExtractor {
                 n = new Node();
                 n.setId(nodeId);
                 n.updateLocation(entry.getCoordinate());
+                nodes.put(nodeId, n);
             }
 
             //verifying for opening or closing connections
@@ -78,44 +81,51 @@ public class GeoLifeExtractor {
     }
 
     //check the connections between the node and all other nodes
-    private void checkConnections(Node n, double time){
+    private void checkConnections(Node n, long time){
         for (Node aNode : nodes.values()) {
             if (!aNode.equals(n)) {
                 Coordinate c1 = n.getLocation();
                 Coordinate c2 = aNode.getLocation();
 
-                if (c1.distance(c2) <= radioRange && !isOpenConnection(n, aNode)) {
+                if (c1.distance(c2) <= radioRange && !connectionIsOpened(n, aNode)) {
                     //if is in the range and the connection is not already opened
                     openConnection(n, aNode, time);
-                }else if (c1.distance(c2) >= radioRange && isOpenConnection(n, aNode)){
+                }else if (c1.distance(c2) >= radioRange && connectionIsOpened(n, aNode)){
                     //node get out of reach, must close the connection
-                    Connection c = getOpenConnection(n, aNode);
-                    c.setClosingTime(time);
-                    closeConnection(c);
+                    Connection con = getOpenConnection(n, aNode);
+                    con.setClosingTime(time);
+                    closeConnection(con);
                 }
             }
         }
     }
 
-    private void openConnection(Node n1, Node n2, double time){
+    private void openConnection(Node n1, Node n2, long time){
         String id = generateConnectionId(n1,n2);
-        Connection c = openConnections.put(id, new Connection(n1.getId(),n2.getId(),time));
-        openConnections.put(id, c);
-        String line = String.format("%.0f CONN %d %d %s",time, n1.getId(), n2.getId(), Connection.CONNECTION_OPENING);
+        openConnections.put(id, new Connection(n1.getId(),n2.getId(),time));
+        String line = String.format("%d CONN %d %d %s",time, n1.getId(), n2.getId(), Connection.CONNECTION_OPENING);
         logLine(line);
     }
 
     private void closeConnection(Connection c){
-        openConnections.remove(c);
-        String line = String.format("%.0f CONN %d %d %s", c.getClosingTime(), c.getFrom(), c.getTo(),
+        String id = generateConnectionId(c);
+        openConnections.remove(id);
+        String line = String.format("%d CONN %d %d %s", c.getClosingTime(), c.getFrom(), c.getTo(),
                 Connection.CONNECTION_CLOSING);
         logLine(line);
     }
 
     private String generateConnectionId(Node n1, Node n2){
-        int max = Math.max(n1.getId(), n2.getId());
-        int min = Math.min(n1.getId(), n2.getId());
-        //min<->max
+        return generateConnectionId(n1.getId(), n2.getId());
+    }
+
+    private String generateConnectionId(Connection c){
+        return generateConnectionId(c.getFrom(), c.getTo());
+    }
+
+    private String generateConnectionId(int from, int to){
+        int max = Math.max(from, to);
+        int min = Math.min(from, to);
         String generatedId = ""+ min + "<->" + max;
         return generatedId;
     }
@@ -124,7 +134,7 @@ public class GeoLifeExtractor {
         this.outputLines.add(str);
     }
 
-    private boolean isOpenConnection(Node n1, Node n2){
+    private boolean connectionIsOpened(Node n1, Node n2){
         String id = generateConnectionId(n1,n2);
         return openConnections.containsKey(id);
     }
@@ -132,5 +142,13 @@ public class GeoLifeExtractor {
     private Connection getOpenConnection(Node n1, Node n2){
         String id = generateConnectionId(n1,n2);
         return openConnections.get(id);
+    }
+
+    public void configureRadioRange(int range){
+        this.radioRange = range;
+    }
+
+    public void configureOutputFilename(String filename){
+        this.outputFileName = filename;
     }
 }

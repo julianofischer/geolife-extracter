@@ -18,6 +18,7 @@ public class TrajectoryEntry implements Comparable<TrajectoryEntry>{
         this.nodeId = nodeId;
     }
 
+    //Trajectory entries are ordered by date
     @Override
     public int compareTo(TrajectoryEntry trajectoryEntry) {
         return datetime.compareTo(trajectoryEntry.getDatetime());
@@ -45,5 +46,11 @@ public class TrajectoryEntry implements Comparable<TrajectoryEntry>{
 
     public void setDatetime(Date datetime) {
         this.datetime = datetime;
+    }
+
+    @Override
+    public String toString() {
+        String s = "<%d> <%s> <%s>";
+        return String.format(s, nodeId, coordinate, datetime);
     }
 }

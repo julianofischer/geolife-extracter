@@ -12,7 +12,7 @@ public class GeoLifeReader {
 
 
     public GeoLifeReader(File f){
-        this.root = root;
+        this.root = f;
         dirs = filter(Arrays.asList(root.listFiles()));
     }
 
@@ -29,9 +29,9 @@ public class GeoLifeReader {
     public List<TrajectoryEntry> extractTrajectoryEntries(){
         List<TrajectoryEntry> ret = new ArrayList();
         for (File dir : dirs){
+            System.out.println("Extracting trajectories from: "+dir);
             DirReader dr = new DirReader(dir);
             List<GeoLifeTrajectoryLine> aux = dr.read();
-
             // the directory name is the nodeId
             int nodeId = Integer.parseInt(dir.getName());
 
@@ -40,6 +40,8 @@ public class GeoLifeReader {
                 ret.add(entry);
             }
         }
+        //ordered by date
+        Collections.sort(ret);
         return ret;
     }
 }

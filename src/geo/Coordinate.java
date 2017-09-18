@@ -70,4 +70,9 @@ public class Coordinate {
         double d = EARTH_RADIUS * c;
         return d;
     }
+
+    @Override
+    public String toString() {
+        return ""+latitude+","+longitude;
+    }
 }
