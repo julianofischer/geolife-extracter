@@ -1,4 +1,7 @@
-package reader;
+package geolife;
+
+import core.TrajectoryLine;
+import reader.TrajectoryFileReader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,7 +13,7 @@ import java.util.Scanner;
 /**
  * Created by juliano on 09/05/17.
  */
-public class GeoLifeFileReader {
+public class GeoLifeTrajectoryFileReader implements TrajectoryFileReader {
 
     //number of lines to skip (header)
     private static final int HEADER_LINES = 6;
@@ -20,19 +23,24 @@ public class GeoLifeFileReader {
     private Scanner scanner;
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public GeoLifeFileReader(File f){
+    public GeoLifeTrajectoryFileReader(File f){
         this.file = f;
-        try {
-            scanner = new Scanner(file);
-            skipLines(HEADER_LINES);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        prepareFile(f);
     }
 
 
     public boolean hasNextLine(){
         return scanner.hasNextLine();
+    }
+
+    @Override
+    public void prepareFile(File f) {
+        try {
+            scanner = new Scanner(f);
+            skipLines(HEADER_LINES);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -42,8 +50,8 @@ public class GeoLifeFileReader {
         }
     }
 
-    public GeoLifeTrajectoryLine nextLine(){
-        GeoLifeTrajectoryLine r = null;
+    public TrajectoryLine nextLine(){
+        TrajectoryLine r = null;
 
         String line = scanner.nextLine();
         String row[] = line.split(SEPARATOR);

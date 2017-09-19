@@ -1,4 +1,4 @@
-package geo;
+package core;
 
 /**
  * Created by juliano on 09/05/17.

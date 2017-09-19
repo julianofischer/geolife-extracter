@@ -1,4 +1,7 @@
-package reader;
+package geolife;
+
+import core.TrajectoryEntry;
+import reader.DirReader;
 
 import java.io.File;
 import java.util.*;

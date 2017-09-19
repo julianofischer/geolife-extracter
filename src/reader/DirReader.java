@@ -1,5 +1,9 @@
 package reader;
 
+import core.TrajectoryLine;
+import geolife.GeoLifeTrajectoryFileReader;
+import geolife.GeoLifeTrajectoryLine;
+
 import java.io.File;
 import java.util.*;
 
@@ -11,25 +15,28 @@ public class DirReader {
     private File trajectoryRoot;
     private List<File> trajectoryFiles;
     private File reading;
-    private GeoLifeFileReader fileReader = null;
+
+    //strategy pattern
+    private TrajectoryFileReader trajectoryFileReader = null;
+
     private Queue<File> filesToRead;
 
-    public DirReader(File root) {
+    public DirReader(File root, TrajectoryFileReader fr) {
         this.root = root;
         this.trajectoryRoot = new File(root.getAbsolutePath() + "/Trajectory");
         trajectoryFiles = new ArrayList<File>(Arrays.asList(trajectoryRoot.listFiles()));
         reading = null;
         filesToRead = new LinkedList<File>(trajectoryFiles);
-        fileReader = new GeoLifeFileReader(filesToRead.remove());
+        trajectoryFileReader = fr;
     }
 
     //should be called after verification by "hasNextLine"
-    private GeoLifeTrajectoryLine readNextLine() {
-        if (!fileReader.hasNextLine()) {
-            fileReader = new GeoLifeFileReader(filesToRead.remove());
+    private TrajectoryLine readNextLine() {
+        if (!trajectoryFileReader.hasNextLine()) {
+            trajectoryFileReader.prepareFile(filesToRead.remove());
         }
 
-        return fileReader.nextLine();
+        return trajectoryFileReader.nextLine();
     }
 
     private boolean hasNextFile() {
@@ -39,17 +46,17 @@ public class DirReader {
     }
 
     private boolean hasNextLine() {
-        if (fileReader != null) {
-            if (fileReader.hasNextLine()) {
+        if (trajectoryFileReader != null) {
+            if (trajectoryFileReader.hasNextLine()) {
                 return true;
             }
         }
         return hasNextFile();
     }
 
-    public ArrayList<GeoLifeTrajectoryLine> read(){
+    public ArrayList<TrajectoryLine> read(){
 
-        ArrayList<GeoLifeTrajectoryLine> ret = new ArrayList();
+        ArrayList<TrajectoryLine> ret = new ArrayList();
 
         while(hasNextLine()){
             ret.add(readNextLine());

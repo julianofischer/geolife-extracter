@@ -1,4 +1,6 @@
-package geo;
+package core;
+
+import core.Coordinate;
 
 /**
  * Created by juliano on 09/05/17.

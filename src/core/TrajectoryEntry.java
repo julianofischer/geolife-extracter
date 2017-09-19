@@ -1,6 +1,6 @@
-package reader;
+package core;
 
-import geo.Coordinate;
+import geolife.GeoLifeTrajectoryLine;
 
 import java.util.Date;
 

@@ -1,8 +1,9 @@
-package extractor;
+package geolife;
 
-import geo.Coordinate;
-import reader.GeoLifeReader;
-import reader.TrajectoryEntry;
+import core.Connection;
+import core.Coordinate;
+import core.Node;
+import core.TrajectoryEntry;
 
 import java.io.File;
 import java.io.IOException;

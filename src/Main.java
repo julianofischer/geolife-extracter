@@ -1,5 +1,4 @@
-import extractor.GeoLifeExtractor;
-import geo.Coordinate;
+import geolife.GeoLifeExtractor;
 
 import java.io.File;
 import java.time.Duration;

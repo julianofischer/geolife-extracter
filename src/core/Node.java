@@ -1,6 +1,4 @@
-package extractor;
-
-import geo.Coordinate;
+package core;
 
 /**
  * Created by juliano on 10/05/17.

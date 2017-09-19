@@ -1,4 +1,4 @@
-package extractor;
+package core;
 
 /**
  * Created by juliano on 16/09/17.
