@@ -54,7 +54,7 @@ public class DirReader {
         return hasNextFile();
     }
 
-    public ArrayList<TrajectoryLine> read(){
+    public List<TrajectoryLine> read(){
 
         ArrayList<TrajectoryLine> ret = new ArrayList();
 

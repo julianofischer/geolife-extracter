@@ -19,13 +19,17 @@ public class GeoLifeTrajectoryFileReader implements TrajectoryFileReader {
     private static final int HEADER_LINES = 6;
     private static final String SEPARATOR = ",";
 
-    private final File file;
+    private File fileToRead;
     private Scanner scanner;
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public GeoLifeTrajectoryFileReader(File f){
-        this.file = f;
+        this.fileToRead = f;
         prepareFile(f);
+    }
+
+    public GeoLifeTrajectoryFileReader(){
+
     }
 
 

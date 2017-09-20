@@ -1,6 +1,7 @@
 package geolife;
 
 import core.TrajectoryEntry;
+import core.TrajectoryLine;
 import reader.DirReader;
 
 import java.io.File;
@@ -33,8 +34,11 @@ public class GeoLifeReader {
         List<TrajectoryEntry> ret = new ArrayList();
         for (File dir : dirs){
             System.out.println("Extracting trajectories from: "+dir);
-            DirReader dr = new DirReader(dir);
-            List<GeoLifeTrajectoryLine> aux = dr.read();
+            DirReader dr = new DirReader(dir, new GeoLifeTrajectoryFileReader());
+
+            //upcasting...
+            List<GeoLifeTrajectoryLine> aux = (List<GeoLifeTrajectoryLine>)(TrajectoryLine)dr.read();
+
             // the directory name is the nodeId
             int nodeId = Integer.parseInt(dir.getName());
 
