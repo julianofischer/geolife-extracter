@@ -18,13 +18,13 @@ public class GeoLifeTrajectoryFileReader implements TrajectoryFileReader {
     //number of lines to skip (header)
     private static final int HEADER_LINES = 6;
     private static final String SEPARATOR = ",";
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private File fileToRead;
     private Scanner scanner;
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public GeoLifeTrajectoryFileReader(File f){
-        this.fileToRead = f;
+        //this.fileToRead = f;
         prepareFile(f);
     }
 
@@ -39,8 +39,9 @@ public class GeoLifeTrajectoryFileReader implements TrajectoryFileReader {
 
     @Override
     public void prepareFile(File f) {
+        this.fileToRead = f;
         try {
-            scanner = new Scanner(f);
+            scanner = new Scanner(fileToRead);
             skipLines(HEADER_LINES);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

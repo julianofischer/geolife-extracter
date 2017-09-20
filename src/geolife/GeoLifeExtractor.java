@@ -12,6 +12,9 @@ import java.util.*;
 
 /**
  * Created by juliano on 16/09/17.
+ * todo: tornar este código genérico para funcionar com todos os datasets.
+ *       é possível utilizar o padrão "Strategy" para que o reader seja genérico
+ *       e definido durante tempo de execução.
  */
 public class GeoLifeExtractor {
 

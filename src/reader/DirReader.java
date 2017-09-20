@@ -9,12 +9,16 @@ import java.util.*;
 
 /**
  * Created by juliano on 10/05/17.
+ * TODO: remover menções a "/Trajectory" tornando o código mais genérico.
+ *       Somente desta forma esta classe poderá ser usada por todos os "readers"
+ *       A menção ao diretório "/Trajectory" deve ser tratada pelo reader próprio
+ *       do dataset, neste caso, GeoLifeReader.
  */
 public class DirReader {
     private File root;
     private File trajectoryRoot;
     private List<File> trajectoryFiles;
-    private File reading;
+    //private File reading;
 
     //strategy pattern
     private TrajectoryFileReader trajectoryFileReader = null;
@@ -25,7 +29,6 @@ public class DirReader {
         this.root = root;
         this.trajectoryRoot = new File(root.getAbsolutePath() + "/Trajectory");
         trajectoryFiles = new ArrayList<File>(Arrays.asList(trajectoryRoot.listFiles()));
-        reading = null;
         filesToRead = new LinkedList<File>(trajectoryFiles);
         trajectoryFileReader = fr;
     }
